@@ -5,28 +5,37 @@
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body class="center">
 
   <h1>🎧 Interview Copilot</h1>
 
-  <button id="installBtn">Install App</button>
+  <button id="installBtn" style="display:none;">Install App</button>
 
   <script>
+    const installBtn = document.getElementById("installBtn");
     let deferredPrompt;
 
+    // Fires when PWA can be installed
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
       installBtn.style.display = "block";
     });
 
-    installBtn.onclick = async () => {
+    // When user clicks the button
+    installBtn.addEventListener('click', async () => {
+      if (!deferredPrompt) return;
       deferredPrompt.prompt();
-    };
+      const { outcome } = await deferredPrompt.userChoice;
+      console.log('User choice:', outcome);
+      deferredPrompt = null;
+      installBtn.style.display = "none";
+    });
 
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("service-worker.js");
+    // Register service worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('Service worker registered'));
     }
   </script>
 
