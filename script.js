@@ -1,23 +1,32 @@
-const startBtn = document.getElementById("startBtn");
-const stopBtn = document.getElementById("stopBtn");
-
-const questionBox = document.getElementById("question");
-const answerBox = document.getElementById("answer");
+const chat = document.getElementById("chat");
+const micBtn = document.getElementById("micBtn");
 
 const SpeechRecognition =
   window.SpeechRecognition || window.webkitSpeechRecognition;
 
 const recognition = new SpeechRecognition();
-recognition.continuous = true;
+recognition.continuous = false;
 
-startBtn.onclick = () => recognition.start();
-stopBtn.onclick = () => recognition.stop();
+function addMessage(text, type) {
+  const div = document.createElement("div");
+  div.className = "msg " + type;
+  div.innerText = text;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+}
 
-recognition.onresult = async (event) => {
-  const text = event.results[event.results.length - 1][0].transcript;
+micBtn.onclick = () => {
+  recognition.start();
+  micBtn.innerText = "🔴";
+};
 
-  questionBox.value = text;
+recognition.onresult = (event) => {
+  const text = event.results[0][0].transcript;
 
-  // TEMP: fake answer so you can test UI
-  answerBox.value = "AI answer will appear here (backend not connected yet)";
+  addMessage(text, "user");
+
+  // temp answer (backend later)
+  addMessage("Thinking...", "bot");
+
+  micBtn.innerText = "🎤";
 };

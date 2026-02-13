@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
   <title>Interview Copilot</title>
 
-  <link rel="manifest" href="manifest.json"/>
-  <link rel="stylesheet" href="style.css"/>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
 
   <script>
     if ("serviceWorker" in navigator) {
@@ -16,18 +17,14 @@
 </head>
 
 <body>
-  <div class="app">
-    <h1>🎧 Interview Copilot</h1>
 
-    <button id="startBtn">Start Listening</button>
-    <button id="stopBtn">Stop</button>
+  <header>
+    🎧 Interview Copilot
+  </header>
 
-    <h3>Question:</h3>
-    <textarea id="question" readonly></textarea>
+  <div id="chat"></div>
 
-    <h3>Answer:</h3>
-    <textarea id="answer" readonly></textarea>
-  </div>
+  <button id="micBtn">🎤</button>
 
   <script src="script.js"></script>
 </body>
