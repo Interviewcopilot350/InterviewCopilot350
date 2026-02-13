@@ -1,43 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interview Copilot</title>
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="style.css">
+  <meta name="theme-color" content="#1a73e8">
 </head>
-<body class="center">
+<body>
+  <div class="app">
+    <h1>🎤 Interview Copilot</h1>
+    <p>Install the app to use it fully!</p>
+    <button id="installBtn" style="display:none;">Install App</button>
+  </div>
 
-  <h1>🎧 Interview Copilot</h1>
-
-  <button id="installBtn" style="display:none;">Install App</button>
-
-  <script>
-    const installBtn = document.getElementById("installBtn");
-    let deferredPrompt;
-
-    // Fires when PWA can be installed
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      installBtn.style.display = "block";
-    });
-
-    // When user clicks the button
-    installBtn.addEventListener('click', async () => {
-      if (!deferredPrompt) return;
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      console.log('User choice:', outcome);
-      deferredPrompt = null;
-      installBtn.style.display = "none";
-    });
-
-    // Register service worker
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js')
-        .then(() => console.log('Service worker registered'));
-    }
-  </script>
-
+  <script src="script.js"></script>
 </body>
 </html>

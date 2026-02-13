@@ -1,15 +1,27 @@
-const mic = document.getElementById("mic");
-const output = document.getElementById("output");
+let deferredPrompt;
+const installBtn = document.getElementById('installBtn');
 
-const SpeechRecognition =
-  window.SpeechRecognition || window.webkitSpeechRecognition;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  installBtn.style.display = 'inline-block';
+});
 
-const recognition = new SpeechRecognition();
+installBtn.addEventListener('click', async () => {
+  installBtn.style.display = 'none';
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  if (outcome === 'accepted') {
+    console.log('App installed!');
+  } else {
+    console.log('App not installed.');
+  }
+  deferredPrompt = null;
+});
 
-mic.onclick = () => {
-  recognition.start();
-};
-
-recognition.onresult = (e) => {
-  output.innerText = e.results[0][0].transcript;
-};
+// Register service worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js')
+    .then(() => console.log('Service Worker Registered'))
+    .catch(err => console.log('SW Registration Failed:', err));
+}
